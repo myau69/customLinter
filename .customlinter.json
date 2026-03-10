@@ -1,0 +1,20 @@
+{
+  "rules": {
+    "lowercase": true,
+    "english": true,
+    "specials": true,
+    "sensitive": true
+  },
+  "autofix": {
+    "enabled": true,
+    "lowercase": true,
+    "specials": true
+  },
+  "sensitive": {
+    "patterns": [
+      "session_id",
+      "private_key",
+      "authorization"
+    ]
+  }
+}

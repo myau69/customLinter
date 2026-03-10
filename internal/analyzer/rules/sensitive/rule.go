@@ -14,7 +14,7 @@ import (
 
 const Message = "log message contains potentially sensitive data"
 
-var sensitiveWords = []string{
+var defaultSensitiveWords = []string{
 	"password",
 	"passwd",
 	"pwd",
@@ -24,7 +24,12 @@ var sensitiveWords = []string{
 }
 
 func Check(pass *analysis.Pass, msg model.LogMessage) bool {
-	if exprContainsSensitive(pass, msg.MsgExpr) {
+	return CheckWithPatterns(pass, msg, nil)
+}
+
+func CheckWithPatterns(pass *analysis.Pass, msg model.LogMessage, customPatterns []string) bool {
+	words := buildSensitiveWords(customPatterns)
+	if exprContainsSensitive(pass, msg.MsgExpr, words) {
 		return true
 	}
 
@@ -32,10 +37,36 @@ func Check(pass *analysis.Pass, msg model.LogMessage) bool {
 		return false
 	}
 
-	return containsSensitive(msg.Text)
+	return containsSensitive(msg.Text, words)
 }
 
-func exprContainsSensitive(pass *analysis.Pass, expr ast.Expr) bool {
+func buildSensitiveWords(customPatterns []string) []string {
+	seen := make(map[string]struct{}, len(defaultSensitiveWords)+len(customPatterns))
+	words := make([]string, 0, len(defaultSensitiveWords)+len(customPatterns))
+
+	add := func(raw string) {
+		normalized := normalize(raw)
+		if normalized == "" {
+			return
+		}
+		if _, ok := seen[normalized]; ok {
+			return
+		}
+		seen[normalized] = struct{}{}
+		words = append(words, normalized)
+	}
+
+	for _, word := range defaultSensitiveWords {
+		add(word)
+	}
+	for _, word := range customPatterns {
+		add(word)
+	}
+
+	return words
+}
+
+func exprContainsSensitive(pass *analysis.Pass, expr ast.Expr, words []string) bool {
 	if expr == nil {
 		return false
 	}
@@ -51,17 +82,17 @@ func exprContainsSensitive(pass *analysis.Pass, expr ast.Expr) bool {
 			if isPkgName(pass, n) {
 				return true
 			}
-			if containsSensitive(n.Name) {
+			if containsSensitive(n.Name, words) {
 				found = true
 				return false
 			}
 		case *ast.SelectorExpr:
-			if containsSensitive(n.Sel.Name) {
+			if containsSensitive(n.Sel.Name, words) {
 				found = true
 				return false
 			}
 		case *ast.BasicLit:
-			if n.Kind == token.STRING && containsSensitive(n.Value) {
+			if n.Kind == token.STRING && containsSensitive(n.Value, words) {
 				found = true
 				return false
 			}
@@ -82,9 +113,9 @@ func isPkgName(pass *analysis.Pass, ident *ast.Ident) bool {
 	return ok
 }
 
-func containsSensitive(s string) bool {
+func containsSensitive(s string, words []string) bool {
 	normalized := normalize(s)
-	for _, word := range sensitiveWords {
+	for _, word := range words {
 		if strings.Contains(normalized, word) {
 			return true
 		}

@@ -61,3 +61,20 @@ func TestCheck(t *testing.T) {
 		})
 	}
 }
+
+func TestCheckWithPatterns(t *testing.T) {
+	pass := &analysis.Pass{TypesInfo: &types.Info{Uses: map[*ast.Ident]types.Object{}}}
+	msg := model.LogMessage{
+		Call:    &ast.CallExpr{},
+		MsgExpr: &ast.BasicLit{Kind: token.STRING, Value: "\"session_id present\""},
+		HasText: true,
+		Text:    "session_id present",
+	}
+
+	if got := CheckWithPatterns(pass, msg, nil); got {
+		t.Fatalf("CheckWithPatterns() = %v, want false without custom patterns", got)
+	}
+	if got := CheckWithPatterns(pass, msg, []string{"session_id"}); !got {
+		t.Fatalf("CheckWithPatterns() = %v, want true with custom patterns", got)
+	}
+}
