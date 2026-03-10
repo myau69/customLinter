@@ -47,7 +47,25 @@
 
 ## Запуск
 
-Запуск линтера как standalone-анализатора:
+### Запуск как плагина golangci-lint 
+
+Сборка кастомного бинарника `golangci-lint` с подключенным плагином:
+
+```bash
+golangci-lint custom -v
+```
+
+Запуск линтера через собранный бинарник:
+
+```bash
+./custom-gcl run ./...
+```
+
+Конфигурация плагина и линтера задается в:
+- `.custom-gcl.yml` — сборка кастомного `golangci-lint` с модульным плагином;
+- `.golangci.yml` — включение линтера `customlinter` и его settings.
+
+### Запуск как standalone-анализатора 
 
 ```bash
 go run ./cmd/loglint ./...
