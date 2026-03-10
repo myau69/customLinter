@@ -55,3 +55,8 @@ go run ./cmd/loglint ./...
 ```bash
 go test ./...
 ```
+
+
+```bash
+go test ./internal/analyzer
+```

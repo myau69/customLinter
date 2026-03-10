@@ -7,5 +7,5 @@ import (
 )
 
 func TestAnalyzer(t *testing.T) {
-	analysistest.Run(t, analysistest.TestData(), Analyzer, "example.com/loglinttest/a")
+	analysistest.Run(t, analysistest.TestData(), Analyzer, "example.com/loglinttest/src/foo")
 }
