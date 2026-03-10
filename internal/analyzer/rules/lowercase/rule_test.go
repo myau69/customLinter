@@ -3,7 +3,7 @@ package lowercase
 import (
 	"testing"
 
-	"customlinter/internal/analyzer/model"
+	"github.com/myau69/customLinter/internal/analyzer/model"
 )
 
 func TestCheck(t *testing.T) {

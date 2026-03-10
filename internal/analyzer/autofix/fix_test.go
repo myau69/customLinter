@@ -5,7 +5,7 @@ import (
 	"go/token"
 	"testing"
 
-	"customlinter/internal/analyzer/model"
+	"github.com/myau69/customLinter/internal/analyzer/model"
 )
 
 func TestLowercase(t *testing.T) {

@@ -6,7 +6,7 @@ import (
 	"go/types"
 	"testing"
 
-	"customlinter/internal/analyzer/model"
+	"github.com/myau69/customLinter/internal/analyzer/model"
 
 	"golang.org/x/tools/go/analysis"
 )

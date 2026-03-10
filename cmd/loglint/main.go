@@ -1,7 +1,7 @@
 package main
 
 import (
-	"customlinter/internal/analyzer"
+	"github.com/myau69/customLinter/internal/analyzer"
 
 	"golang.org/x/tools/go/analysis/singlechecker"
 )

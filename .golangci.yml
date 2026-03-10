@@ -1,0 +1,13 @@
+version: "2"
+
+linters:
+  default: none
+  enable:
+    - customlinter
+  settings:
+    custom:
+      customlinter:
+        type: module
+        description: custom log linter
+        settings:
+          config: .customlinter.json

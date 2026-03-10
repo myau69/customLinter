@@ -3,14 +3,14 @@ package analyzer
 import (
 	"go/ast"
 
-	"customlinter/internal/analyzer/autofix"
-	"customlinter/internal/analyzer/config"
-	"customlinter/internal/analyzer/extractor"
-	"customlinter/internal/analyzer/model"
-	"customlinter/internal/analyzer/rules/english"
-	"customlinter/internal/analyzer/rules/lowercase"
-	"customlinter/internal/analyzer/rules/sensitive"
-	"customlinter/internal/analyzer/rules/specials"
+	"github.com/myau69/customLinter/internal/analyzer/autofix"
+	"github.com/myau69/customLinter/internal/analyzer/config"
+	"github.com/myau69/customLinter/internal/analyzer/extractor"
+	"github.com/myau69/customLinter/internal/analyzer/model"
+	"github.com/myau69/customLinter/internal/analyzer/rules/english"
+	"github.com/myau69/customLinter/internal/analyzer/rules/lowercase"
+	"github.com/myau69/customLinter/internal/analyzer/rules/sensitive"
+	"github.com/myau69/customLinter/internal/analyzer/rules/specials"
 
 	"golang.org/x/tools/go/analysis"
 )
